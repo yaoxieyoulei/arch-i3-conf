@@ -1,0 +1,63 @@
+May 05 23:21 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+May 05 23:21 : update: added /Dan Bălan - Johanna (Shut Up).mp3
+May 05 23:21 : update: added /G.E.M.邓紫棋 - 泡沫.mp3
+May 05 23:21 : update: added /刘惜君 - 我很快乐.mp3
+May 05 23:21 : update: added /HOPE-T - NCS Style Mix.mp3
+May 05 23:21 : update: added /陈粒 - 奇妙能力歌.mp3
+May 05 23:21 : update: added /G.E.M.邓紫棋 - 单行的轨道.mp3
+May 05 23:21 : update: added /陈粒 - 走马.mp3
+May 05 23:21 : update: added /陈粒 - 易燃易爆炸.mp3
+May 05 23:21 : update: added /Joy Gruttmann - Schnappi.mp3
+May 05 23:21 : client: [0] opened from 127.0.0.1:56760
+May 05 23:22 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+May 05 23:22 : update: added /Dan Bălan - Johanna (Shut Up).mp3
+May 05 23:22 : update: added /G.E.M.邓紫棋 - 泡沫.mp3
+May 05 23:22 : update: added /刘惜君 - 我很快乐.mp3
+May 05 23:22 : update: added /HOPE-T - NCS Style Mix.mp3
+May 05 23:22 : update: added /陈粒 - 奇妙能力歌.mp3
+May 05 23:22 : update: added /G.E.M.邓紫棋 - 单行的轨道.mp3
+May 05 23:22 : update: added /陈粒 - 走马.mp3
+May 05 23:22 : update: added /陈粒 - 易燃易爆炸.mp3
+May 05 23:22 : update: added /Joy Gruttmann - Schnappi.mp3
+May 05 23:22 : client: [0] opened from 127.0.0.1:56770
+May 05 23:23 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+May 05 23:23 : client: [0] opened from 127.0.0.1:56780
+May 05 23:24 : client: [1] opened from [::1]:45260
+May 05 23:24 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
+May 05 23:24 : client: [1] closed
+May 05 23:24 : client: [2] opened from [::1]:45262
+May 05 23:24 : client: [2] closed
+May 05 23:24 : client: [3] opened from [::1]:45264
+May 05 23:24 : client: [3] closed
+May 05 23:24 : client: [4] opened from [::1]:45266
+May 05 23:24 : client: [4] closed
+May 05 23:24 : client: [5] opened from [::1]:45268
+May 05 23:24 : client: [5] closed
+May 05 23:24 : client: [6] opened from [::1]:45270
+May 05 23:24 : client: [6] closed
+May 05 23:24 : client: [7] opened from [::1]:45278
+May 05 23:24 : client: [7] closed
+May 05 23:24 : client: [8] opened from [::1]:45280
+May 05 23:24 : client: [8] closed
+May 05 23:24 : client: [9] opened from [::1]:45282
+May 05 23:24 : client: [9] closed
+May 05 23:24 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+May 05 23:25 : client: [10] opened from 127.0.0.1:56810
+May 05 23:25 : client: [10] closed
+May 05 23:25 : client: [11] opened from 127.0.0.1:56812
+May 05 23:25 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+May 05 23:25 : client: [11] closed
+May 05 23:25 : client: [12] opened from 127.0.0.1:56814
+May 05 23:25 : client: [12] closed
+May 05 23:28 : client: [0] closed
+May 05 23:28 : client: [13] opened from 127.0.0.1:56826
+May 05 23:28 : client: [14] opened from 127.0.0.1:56828
+May 05 23:30 : client: [15] opened from 127.0.0.1:57058
+May 05 23:30 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+May 05 23:30 : client: [15] closed
+May 05 23:30 : client: [16] opened from 127.0.0.1:57060
+May 05 23:30 : client: [16] closed
+May 05 23:30 : client: [17] opened from 127.0.0.1:57064
+May 05 23:30 : client: [17] closed
+May 05 23:31 : client: [18] opened from 127.0.0.1:57092
+May 05 23:31 : client: [18] closed

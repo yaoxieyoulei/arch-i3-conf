@@ -51,7 +51,7 @@ font-0 = Source Code Pro:pixelsize=10;0
 font-1 = WenQuanYi Zen Hei Mono:pixelsize=10;0
 font-2 = font awesome:fontformat=truetype:size=10:antialias=true;0
 
-modules-left = icon mpd1 label
+modules-left = icon mpd1 
 modules-center = mpd2
 modules-right = memory cpu volume xbacklight date
 ;filesystem xbacklight volume memory cpu  xwindow wlan eth battery temperature date
@@ -487,7 +487,7 @@ type = internal/temperature
 thermal-zone = 0
 warn-temperature = 60
 
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon0/temp1_input
 
 format = <ramp> <label>
 format-underline = #ADFF2F
