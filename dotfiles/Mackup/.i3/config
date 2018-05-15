@@ -194,6 +194,7 @@ bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
 # Open applications on specific workspaces
  assign [class="VirtualBox"] $ws9
  assign [class="netease-cloud-music"] $ws8
+ assign [class="mpv"] $ws6
 # assign [class="Pcmanfm"] $ws3
 # assign [class="Skype"] $ws5
 

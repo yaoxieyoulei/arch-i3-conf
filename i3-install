@@ -1,0 +1,184 @@
+https://www.viseator.com/2017/05/17/arch_install/
+https://www.viseator.com/2017/05/19/arch_setup/
+https://segmentfault.com/a/1190000008280278
+
+检查引导方式
+	ls /sys/firmware/efi/efivars
+		输入命令并回车执行后，如果提示:ls: cannot access '/sys/firmware/efi/efivars': No such file or directory
+		表明你是以BIOS方式引导，否则为以EFI方式引导
+联网
+	dhcpcd / wifi-menu
+更新系统时间
+	timedatectl set-ntp true
+分区与格式化
+	查看目前的分区情况
+		fdisk -l
+			如果你是BIOS/MBR方式引导，跳过下面创建一个引导分区的步骤。
+			如果你是EFI/GPT方式引导，并且同时安装了其他系统，那么你应该可以在分区列表中发现一个较小的并且类型为EFI的分区（注意查看硬盘的大小，这个EFI分区有可能是你U盘中的，需要排除），这是你的引导分区，请记下它的路径（/dev/sdxY)备用，跳过下面创建一个引导分区的步骤。
+			如果你是EFI/GPT方式引导，但是没有这个较小的并且类型为EFI的引导分区（这种情况一般只会出现在新的硬盘），那么你需要先创建一个引导分区。
+	创建一个引导分区（仅上面所列的第三种情况需要进行这步）
+		fdisk /dev/sdx （请将sdx替换成你要操作的磁盘如sdb sdc等）
+			下面你就进入了fdisk的操作环境， 输入m并回车可以查看各命令的作用。
+			如果你是一块全新的硬盘：输入g来创建一个全新的gpt分区表，否则直接进行第2步。
+			输入n创建一个新的分区，首先会让你选择起始扇区，一般直接回车使用默认数值即可，然后可以输入结束扇区或是分区大小，这里我们输入+512M来创建一个512M的引导分区。
+			这时我们可以输入p来查看新创建的分区。
+			输入t并选择新创建的分区序号来更改分区的类型，输入l可以查看所有支持的类型，输入ef更改分区的类型为EFI。
+			输入w来将之前所有的操作写入磁盘生效，在这之前可以输入p来确认自己的分区表没有错误。
+		输入以下命令来格式化刚刚创建的引导分区：
+		mkfs.fat -F32 /dev/sdxY （请将sdxY替换为刚创建的分区）
+		现在引导分区就创建好了。
+	创建根分区
+		输入命令：
+		fdisk /dev/sdx （请将sdx替换成你要操作的磁盘如sdb sdc等）
+			如果你是一块全新的硬盘（否则直接进行第2步）：
+			如果你是BIOS/MBR引导方式：输入o来创建一个全新的MBR分区表。
+			如果你在上一步新建了分区表并创建了引导分区：直接进行步骤2。
+			如果你在另一块硬盘中已经有引导分区：输入g来创建一个全新的gpt分区表。
+			输入n创建一个新的分区，首先会让你选择起始扇区，一般直接回车使用默认数值即可，然后可以输入结束扇区或是分区大小，如果我们想要使创建的分区完全占满空闲的空间，可以直接回车使用默认结束扇区。
+			这时我们可以输入p来查看新创建的分区。
+			输入w来将之前所有的操作写入磁盘生效，在这之前可以输入p来确认自己的分区表没有错误。
+		输入以下命令来格式化刚刚创建的根分区：
+		mkfs.ext4 /dev/sdxY （请将的sdxY替换为刚创建的分区）
+	挂载分区
+		mount /dev/sdxY /mnt （请将sdxY替换为之前创建的根分区）
+		如果你是EFI/GPT引导方式，执行以下命令创建/boot文件夹并将引导分区挂载到上面。BIOS/MBR引导方式无需进行这步。
+			mkdir /mnt/boot
+			mount /dev/sdxY /mnt/boot （请将sdxY替换为之前创建或是已经存在的引导分区）
+选择镜像源
+	vim /etc/pacman.d/mirrorlist
+		Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+		Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch
+安装基本包
+	pacman -Syy更新mirror数据库。
+	pacstrap /mnt base base-devel
+配置Fstab
+	genfstab -L /mnt >> /mnt/etc/fstab
+	cat /mnt/etc/fstab
+	如果是EFI/GPT引导的还应该有引导分区被挂载到/boot目录。
+Chroot
+	arch-chroot /mnt
+	这里顺便说一下，如果以后我们的系统出现了问题，只要插入U盘并启动， 将我们的系统根分区挂载到了/mnt下（如果有efi分区也要挂载到/mnt/boot下），再通过这条命令就可以进入我们的系统进行修复操作。
+设置时区
+	ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+	hwclock --systohc
+提前安装必须软件包
+	pacman -S vim dialog wpa_supplicant ntfs-3g networkmanager net-tools
+设置Locale
+	vim /etc/locale.gen
+		在文件中找到zh_CN.UTF-8 UTF-8 zh_HK.UTF-8 UTF-8 zh_TW.UTF-8 UTF-8 en_US.UTF-8 UTF-8这四行，去掉行首的#号
+	locale-gen
+	vim /etc/locale.conf
+		LANG=en_US.UTF-8
+设置主机名
+	vim /etc/hostname
+		在文件的第一行输入你自己设定的一个myhostname
+	vim /etc/hosts
+		127.0.0.1	localhost.localdomain	localhost
+		::1		localhost.localdomain	localhost
+		127.0.1.1	myhostname.localdomain	myhostname
+设置Root密码
+	passwd
+安装Intel-ucode（非IntelCPU可以跳过此步骤）
+	pacman -S intel-ucode
+安装Bootloader
+	pacman -S os-prober
+	如果为BIOS/MBR引导方式：
+		pacman -S grub
+		grub-install --target=i386-pc /dev/sdx （将sdx换成你安装的硬盘）
+		grub-mkconfig -o /boot/grub/grub.cfg
+			如果报warning failed to connect to lvmetad，falling back to device scanning.错误。参照这篇文章，简单的方法是编辑/etc/lvm/lvm.conf这个文件，找到use_lvmetad = 1将1修改为0，保存，重新配置grub。
+	如果为EFI/GPT引导方式：
+		pacman -S grub efibootmgr
+		grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+		grub-mkconfig -o /boot/grub/grub.cfg
+			如果报warning failed to connect to lvmetad，falling back to device scanning.错误。参照这篇文章，简单的方法是编辑/etc/lvm/lvm.conf这个文件，找到use_lvmetad = 1将1修改为0，保存，重新配置grub。
+			如果报grub-probe: error: cannot find a GRUB drive for /dev/sdb1, check your device.map类似错误，并且sdb1这个地方是你的u盘，这是u盘uefi分区造成的错误，对我们的正常安装没有影响，可以不用理会这条错误。
+	安装后检查
+		vim /boot/grub/grub.cfg
+			检查接近末尾的menuentry部分是否有windows或其他系统名入口。下图例子中是Arch Linux入口与检测到的windows10入口（安装在/dev/sda1），具体情况可能有不同：
+				如果你没有看到Arch Linux系统入口或者该文件不存在，请先检查/boot目录是否正确部署linux内核：cd /boot ls
+					查看是否有initramfs-linux-fallback.img initramfs-linux.img intel-ucode.img vmlinuz-linux这几个文件，如果都没有，说明linux内核没有被正确部署，很有可能是/boot目录没有被正确挂载导致的，确认/boot目录无误后，可以重新部署linux内核：pacman -S linux
+					再重新生成配置文件，就可以找到系统入口。
+				如果你已经安装os-prober包并生成配置文件后还是没有生成其他系统的入口：
+					你目前处的U盘安装环境下有可能无法检测到其他系统的入口，请在下一步中重启登陆之后重新运行：grub-mkconfig -o /boot/grub/grub.cfg
+重启
+	exit
+	reboot
+创建交换文件
+	fallocate -l 512M /swapfile （请将512M换成需要的大小，只能以M或G为单位）
+	chmod 600 /swapfile
+	mkswap /swapfile
+	swapon /swapfile
+	vim /etc/fstab
+	/swapfile none swap defaults 0 0
+新建用户
+	useradd -m -G wheel username （请自行替换username为你的用户名）
+	passwd username （请自行替换username为你的用户名）
+配置sudo
+	pacman -S sudo
+	visudo
+		# %wheel ALL=(ALL)ALL 去掉之前的#注释
+创建用户和安装常用的程序
+	sudo pacman -S xf86-video-intel
+	sudo pacman -S alsa-utils xf86-video-vesa xorg xorg-xinit安装声卡、显卡及xorg。
+	sudo pacman -S zsh git unrar zip unzip openssh glances htop iftop neofetch tree wget
+安装oh-my-zsh
+	sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+	执行vim .zshrc编辑配置文件，修改ZSH_THEME的值可以更改shell的主题，主题可以到这里来查看，我个人比较喜欢使用rkj-repos这个主题。
+		alias ll='ls -l'
+		alias la='ls -a'
+		alias vi='vim'
+		alias svi='sudo vim'
+		alias grep='grep --color=auto'
+		alias install='sudo pacman -S'
+		alias remove='sudo pacman -Rcn'
+		alias upgrade='sudo pacman -Syu'
+		alias findProc='ps -ef | grep '
+		alias docker='sudo docker '
+		alias cls='printf "\033c"'
+	source .zshrc
+安装yaourt
+	sudo vim /etc/pacman.conf，在文件最底部加入以下文本后保存并退出：
+		[archlinuxcn]
+		SigLevel = Optional TrustAll
+		Server   = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+	sudo pacman -Syu yaourt
+	install archlinuxcn-keyring
+配置桌面环境
+	配置i3wm
+		install blurlock compton dmenu feh
+		yaourt i3-gaps
+		编辑~/.i3/config文件配置
+	配置xinit
+		vim ~/.xinitrc编辑xinit配置文件
+			export LANG=zh_CN.UTF-8
+			export LANGUAGE=zh_CN:en_US
+			export LC_CTYPE=en_US.UTF-8
+			export GTK_IM_MODULE=ibus
+			export QT_IM_MODULE=ibus
+			export XMODIFIERS=@im=ibus
+			exec i3
+			exec ibus-googlepinyin
+		执行vim ~/.zshrc，在文件底部加入这一行[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx，这样以后登陆系统后会自动运行startx登陆到桌面中。
+
+install polybar(先安装依赖) font-awesome-4 ibus-googlepinyin mpd mpc lolcat cmatrix google-chrome roxterm
+
+mpd
+	$ mkdir ~/Music
+	$ mkdir ~/.config/mpd/playlists
+	$ touch ~/.config/mpd/{database,log,pid,state,sticker.sql}	
+
+
+优化
+	修改 /etc/mkinitcpio.conf
+	MODULES="ahci"	
+	mkinitcpio -p linux
+    dmenu 修改系统字体
+					
+zsh
+    yaourt -S antigen-git
+
+vim
+    git clone https://github.com/chxuan/vimplus.git ~/.vimplus
+    cd ~/.vimplus
+    ./install.sh

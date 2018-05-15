@@ -110,3 +110,15 @@ May 10 06:24 : client: [0] opened from 127.0.0.1:43566
 May 10 06:24 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
 May 10 06:24 : client: [1] opened from 127.0.0.1:43568
 May 10 06:25 : player: played "Dan Bălan - Johanna (Shut Up).mp3"
+May 15 17:46 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+May 15 17:46 : client: [0] opened from 127.0.0.1:58916
+May 15 17:46 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
+May 15 17:46 : client: [1] opened from 127.0.0.1:58918
+May 15 17:47 : player: played "Dan Bălan - Johanna (Shut Up).mp3"
+May 15 18:02 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+May 15 18:02 : client: [0] opened from 127.0.0.1:40638
+May 15 18:02 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
+May 15 18:02 : client: [1] opened from 127.0.0.1:40640
+May 15 18:02 : client: [0] closed
+May 15 18:02 : client: [1] closed
+May 15 18:13 : player: played "Dan Bălan - Johanna (Shut Up).mp3"
